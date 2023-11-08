@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>파일 저장하기</title>
+    <style>
+        .button-container {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .button-container button {
+            margin-right: 10px;
+        }
+        .textarea-container {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="button-container">
+        <button onclick="selectOption(1)" id="option1">옵션 1</button>
+        <button onclick="selectOption(2)" id="option2">옵션 2</button>
+    </div>
+
+    <button onclick="saveFile()">파일 저장하기</button>
+
+    <script>
+        var selectedOption = null;
+
+        function selectOption(option) {
+            selectedOption = option;
+
+            var option1Button = document.getElementById("option1");
+            var option2Button = document.getElementById("option2");
+
+            if (option === 1) {
+                option1Button.style.backgroundColor = "#00FF00"; // 체크 표시를 위한 색상 변경
+                option2Button.style.backgroundColor = "";
+            } else if (option === 2) {
+                option1Button.style.backgroundColor = "";
+                option2Button.style.backgroundColor = "#00FF00"; // 체크 표시를 위한 색상 변경
+            }
+        }
+
+        function saveFile() {
+            if (selectedOption === null) {
+                alert("옵션을 선택해주세요!");
+                return;
+            }
+
+            var textToSave = document.getElementById("customText").value;
+
+            if (!textToSave) {
+                alert("저장할 내용을 입력해주세요!");
+                return;
+            }
+
+            var blob = new Blob([textToSave], { type: "text/plain;charset=utf-8" });
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "저장할_파일.txt";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+
+</body>
+</html>

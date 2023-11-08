@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>인물 퀴즈 게임</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            margin: 50px auto;
+            max-width: 600px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        .answer-container {
+            display: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .show-answer .answer-container {
+            max-height: 200px; /* Set a value larger than your expected answer height */
+        }
+    </style>
+    <script>
+        var questions = [
+            {
+                question: "빌 게이츠의 창업한 기업은 무엇인가요?",
+                answer: "마이크로소프트"
+            },
+            {
+                question: "애플의 공동 창업자로 유명한 인물은 누구인가요?",
+                answer: "스티브 잡스"
+            },
+            {
+                question: "페이스북의 창업자로 유명한 인물은 누구인가요?",
+                answer: "마크 주커버그"
+            },
+            {
+                question: "아마존의 창업자로 유명한 인물은 누구인가요?",
+                answer: "제프 베조스"
+            },
+            {
+                question: "구글의 공동 창업자로 유명한 인물은 누구인가요?",
+                answer: "래리 페이지"
+            },
+            {
+                question: "테슬라의 창업자로 유명한 인물은 누구인가요?",
+                answer: "일론 머스크"
+            }
+        ];
+
+        var currentQuestion = 0;
+        var score = 0;
+        var lives = 3;
+
+        function showQuestion() {
+            document.getElementById('question').textContent = questions[currentQuestion].question;
+            document.getElementById('lives').textContent = "생명: " + lives;
+        }
+
+        function checkAnswer() {
+            var userAnswer = document.getElementById('answer').value.toLowerCase();
+            var correctAnswer = questions[currentQuestion].answer.toLowerCase();
+
+            if (userAnswer === correctAnswer) {
+                score++;
+            } else {
+                lives--;
+            }
+
+            currentQuestion++;
+
+            if (currentQuestion < questions.length) {
+                showQuestion();
+                document.getElementById('answer').value = "";
+            } else {
+                if (lives === 0) {
+                    document.getElementById('gameOver').style.display = 'block';
+                } else {
+                    document.getElementById('gameFinished').style.display = 'block';
+                }
+                document.getElementById('gameContainer').style.display = 'none';
+                document.getElementById('finalScore').textContent = "총 " + score + "문제 맞추셨습니다.";
+            }
+        }
+
+        function retry() {
+            currentQuestion = 0;
+            score = 0;
+            lives = 3;
+            document.getElementById('gameOver').style.display = 'none';
+            document.getElementById('gameContainer').style.display = 'block';
+            showQuestion();
+            document.getElementById('answer').value = "";
+            document.getElementById('finalScore').textContent = "";
+        }
+
+        function showAnswers() {
+            document.getElementById('gameContainer').style.display = 'none';
+            document.getElementById('answerContainer').style.display = 'block';
+        }
+
+        function goBackToGame() {
+            document.getElementById('answerContainer').style.display = 'none';
+            document.getElementById('gameContainer').style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <h1>인물 퀴즈 게임</h1>
+    <div id="gameContainer" class="container">
+        <p id="question"></p>
+        <input type="text" id="answer"><br><br>
+        <button id="checkButton" onclick="checkAnswer()">정답 확인</button><br><br>
+        <p id="lives"></p>
+    </div>
+    <div id="gameOver" class="container" style="display:none;">
+        <p id="finalScore"></p>
+        <button onclick="retry()">문제 다시 풀기</button>
+        <button onclick="showAnswers()">정답 보기</button>
+    </div>
+    <div id="answerContainer" class="container" style="display:none;">
+        <p>정답:</p>
+        <ul class="answer-container">
+            <li>1. 마이크로소프트</li>
+            <li>2. 스티브 잡스</li>
+            <
